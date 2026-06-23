@@ -15,7 +15,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    // returns the entity directly (leaks customer password, credit card, etc.)
     @PostMapping("/createOrder")
     public Order createOrder(@RequestBody Map<String, Object> body) {
 
@@ -37,13 +36,11 @@ public class OrderController {
         return orderService.searchByDiscountCode(discountCode);
     }
 
-    // pay via GET, returns 200 even when it fails (returns null)
     @GetMapping("/payOrder/{id}")
     public Order pay(@PathVariable Long id) {
         return orderService.pay(id);
     }
 
-    // delete via GET
     @GetMapping("/deleteOrder/{id}")
     public String delete(@PathVariable Long id) {
         orderService.delete(id);

@@ -11,7 +11,6 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    // controller talking to the repository directly, no service layer
     @Autowired
     private ProductRepository productRepository;
 
@@ -22,20 +21,17 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Product get(@PathVariable Long id) {
-        // returns null if not found -> NPE / 200 with empty body
         return productRepository.findById(id).orElse(null);
     }
 
     @PostMapping("/save")
     public Product save(@RequestBody Product product) {
-        // no validation at all, status set with a magic string
         if (product.status == null) {
             product.status = "ACTIVE";
         }
         return productRepository.save(product);
     }
 
-    // business rule (apply discount) sitting in the controller, mutating and saving
     @GetMapping("/applyDiscount")
     public Product applyDiscount(@RequestParam Long id, @RequestParam double percent) {
         Product p = productRepository.findById(id).get();

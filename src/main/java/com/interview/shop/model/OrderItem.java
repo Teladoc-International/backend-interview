@@ -18,7 +18,6 @@ public class OrderItem {
 
     public int quantity;
 
-    // price copied as double
     public double price;
 
     public OrderItem() {

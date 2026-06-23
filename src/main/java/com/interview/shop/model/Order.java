@@ -18,12 +18,10 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<OrderItem> items = new ArrayList<>();
 
-    // status handled as String: "NEW", "PAID", "SHIPPED", "CANCELLED"
     public String status;
 
     public double total;
 
-    // stored as String "dd/MM/yyyy"
     public String createdDate;
 
     public String discountCode;

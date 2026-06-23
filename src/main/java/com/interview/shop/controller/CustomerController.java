@@ -18,7 +18,6 @@ public class CustomerController {
     @Value("${app.api.key}")
     private String apiKey;
 
-    // returns all customers including password and credit card number
     @GetMapping("/list")
     public List<Customer> list() {
         return customerRepository.findAll();
@@ -26,11 +25,9 @@ public class CustomerController {
 
     @PostMapping("/register")
     public Customer register(@RequestBody Customer customer) {
-        // password saved as-is, no hashing, no email validation
         return customerRepository.save(customer);
     }
 
-    // login by comparing plain text password, returns the whole entity
     @PostMapping("/login")
     public Customer login(@RequestParam String email, @RequestParam String password) {
         List<Customer> all = customerRepository.findAll();
@@ -42,7 +39,6 @@ public class CustomerController {
         return null;
     }
 
-    // manual API key check duplicated logic, hardcoded comparison
     @GetMapping("/admin")
     public List<Customer> admin(@RequestParam String key) {
         if (key.equals("SECRET-12345-ADMIN")) {

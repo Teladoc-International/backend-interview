@@ -32,10 +32,8 @@ public class OrderService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    // shared mutable state in a singleton bean
     public static int orderCounter = 0;
 
-    // Creates an order. Does validation, pricing, discount, stock, persistence... everything here.
     public Order createOrder(Long customerId, List<Long> productIds, List<Integer> quantities, String discountCode) {
 
         Customer customer = customerRepository.findById(customerId).get();
@@ -53,7 +51,6 @@ public class OrderService {
             Product p = productRepository.findById(productIds.get(i)).get();
             int qty = quantities.get(i);
 
-            // no stock check before subtracting
             p.stock = p.stock - qty;
             productRepository.save(p);
 
@@ -69,7 +66,6 @@ public class OrderService {
 
         order.items = items;
 
-        // discount logic with magic numbers and string comparison
         if (discountCode != null) {
             if (discountCode.equals("BLACKFRIDAY")) {
                 total = total - (total * 0.3);
@@ -80,7 +76,6 @@ public class OrderService {
             }
         }
 
-        // free shipping over 50, otherwise add 4.99
         if (total < 50) {
             total = total + 4.99;
         }
@@ -103,7 +98,6 @@ public class OrderService {
         return result;
     }
 
-    // SQL injection through native query string concatenation
     @SuppressWarnings("unchecked")
     public List<Order> searchByDiscountCode(String code) {
         String sql = "SELECT * FROM orders WHERE discount_code = '" + code + "'";
@@ -116,7 +110,6 @@ public class OrderService {
             order.status = "PAID";
             return orderRepository.save(order);
         } catch (Exception e) {
-            // swallow everything
             System.out.println("error paying order " + e.getMessage());
             return null;
         }

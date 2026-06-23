@@ -14,7 +14,6 @@ public class Customer {
 
     public String email;
 
-    // stored in plain text
     public String password;
 
     public String creditCardNumber;
